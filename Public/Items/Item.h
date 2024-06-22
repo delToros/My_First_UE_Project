@@ -8,6 +8,12 @@
 
 class USphereComponent;
 
+enum class EItemState : uint8
+{
+	EIS_Hovering,
+	EIS_Equipped
+};
+
 UCLASS()
 class MYPROJECT_API AItem : public AActor
 {
@@ -46,6 +52,8 @@ protected:
 	// Better to use VisibleAnyWhere with static Mesh components
 	UPROPERTY(BlueprintReadOnly) // with this var will participe in reflection system (garbage collection
 	UStaticMeshComponent* ItemMesh; // This creates empty pointer
+
+	EItemState ItemState = EItemState::EIS_Hovering;
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
