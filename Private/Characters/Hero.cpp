@@ -111,12 +111,19 @@ void AHero::EKeyPressed()
 
 void AHero::MainAttack()
 {
-	if (ActionState == EActionState::EAS_Unoccupied)
+
+	if (CanAttack())
 	{
 		PlayAttacMontage();
 		ActionState = EActionState::EAS_Attacking;
 	}
 	
+}
+
+bool AHero::CanAttack()
+{
+	return ActionState == EActionState::EAS_Unoccupied &&
+		CharacterState != ECharacterState::ECS_Unequipped;
 }
 
 void AHero::PlayAttacMontage()
@@ -148,6 +155,12 @@ void AHero::PlayAttacMontage()
 		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
 	}
 }
+
+void AHero::AttackEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
 
 // Called every frame
 void AHero::Tick(float DeltaTime)
