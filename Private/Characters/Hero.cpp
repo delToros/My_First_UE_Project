@@ -106,6 +106,21 @@ void AHero::EKeyPressed()
 		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
 		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 
+		OverlappingItem = nullptr; // otherwise it will always be true and not enter in else statement.
+		EquipWeapon = OverlappingWeapon;
+	}
+	else
+	{
+		if (CanDisarm())
+		{
+			PlayEquipMontage(FName("Disarm"));
+			CharacterState = ECharacterState::ECS_Unequipped;
+		}
+		if (CanEquip())
+		{
+			PlayEquipMontage(FName("Equip"));
+			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+		}
 	}
 
 }
@@ -122,6 +137,19 @@ void AHero::MainAttack()
 }
 
 bool AHero::CanAttack()
+{
+	return ActionState == EActionState::EAS_Unoccupied &&
+		CharacterState != ECharacterState::ECS_Unequipped;
+}
+
+bool AHero::CanEquip()
+{
+	return ActionState == EActionState::EAS_Unoccupied && 
+		CharacterState == ECharacterState::ECS_Unequipped &&
+		EquipWeapon;
+}
+
+bool AHero::CanDisarm()
 {
 	return ActionState == EActionState::EAS_Unoccupied &&
 		CharacterState != ECharacterState::ECS_Unequipped;
@@ -154,6 +182,16 @@ void AHero::PlayAttacMontage()
 		}
 
 		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
+	}
+}
+
+void AHero::PlayEquipMontage(FName SectionName)
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AnimInstance && EquipMontage)
+	{
+		AnimInstance->Montage_Play(EquipMontage);
+		AnimInstance->Montage_JumpToSection(SectionName, EquipMontage);
 	}
 }
 
