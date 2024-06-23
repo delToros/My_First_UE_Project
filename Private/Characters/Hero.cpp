@@ -71,7 +71,7 @@ void AHero::BeginPlay()
 
 void AHero::Move(const FInputActionValue& Value)
 {
-	if (ActionState == EActionState::EAS_Attacking) return;
+	if (ActionState != EActionState::EAS_Unoccupied) return;
 
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 
@@ -115,11 +115,13 @@ void AHero::EKeyPressed()
 		{
 			PlayEquipMontage(FName("Disarm"));
 			CharacterState = ECharacterState::ECS_Unequipped;
+			ActionState = EActionState::EAS_EquippingWeapon;
 		}
 		else if (CanEquip())
 		{
 			PlayEquipMontage(FName("Equip"));
 			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+			ActionState = EActionState::EAS_EquippingWeapon;
 		}
 	}
 
@@ -169,6 +171,11 @@ void AHero::Arm()
 	{
 		EquipWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
 	}
+}
+
+void AHero::FinishEquipping()
+{
+	ActionState = EActionState::EAS_Unoccupied;
 }
 
 void AHero::PlayAttacMontage()
