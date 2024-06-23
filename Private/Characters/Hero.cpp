@@ -116,7 +116,7 @@ void AHero::EKeyPressed()
 			PlayEquipMontage(FName("Disarm"));
 			CharacterState = ECharacterState::ECS_Unequipped;
 		}
-		if (CanEquip())
+		else if (CanEquip())
 		{
 			PlayEquipMontage(FName("Equip"));
 			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
