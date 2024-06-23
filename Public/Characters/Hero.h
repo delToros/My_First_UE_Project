@@ -80,6 +80,12 @@ protected:
 
 	bool CanDisarm();
 
+	UFUNCTION(BlueprintCallable)
+	void Disarm();
+
+	UFUNCTION(BlueprintCallable)
+	void Arm();
+
 private:
 
 	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;

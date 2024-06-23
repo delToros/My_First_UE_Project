@@ -155,6 +155,22 @@ bool AHero::CanDisarm()
 		CharacterState != ECharacterState::ECS_Unequipped;
 }
 
+void AHero::Disarm()
+{
+	if (EquipWeapon)
+	{
+		EquipWeapon->AttachMeshToSocket(GetMesh(), FName("spine_05Socket"));
+	}
+}
+
+void AHero::Arm()
+{
+	if (EquipWeapon)
+	{
+		EquipWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
+	}
+}
+
 void AHero::PlayAttacMontage()
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
