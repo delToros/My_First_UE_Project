@@ -7,6 +7,7 @@
 #include "Weapon.generated.h"
 
 class USoundBase;
+class UBoxComponent;
 
 /**
  * 
@@ -17,6 +18,8 @@ class MYPROJECT_API AWeapon : public AItem
 	GENERATED_BODY()
 
 public:
+	AWeapon(); // This is constructor (why - becuase it same name as the class. And because it is constructor we do not need return type
+
 	void Equip(USceneComponent* InParent, FName InSocketName);
 
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
@@ -31,4 +34,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	USoundBase* EquipSound;
+
+	UPROPERTY(VisibleAnywhere, Category = "Weapon Properties")
+	UBoxComponent* WeaponBox;
 };
