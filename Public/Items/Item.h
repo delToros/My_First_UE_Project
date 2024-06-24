@@ -55,12 +55,14 @@ protected:
 
 	EItemState ItemState = EItemState::EIS_Hovering;
 
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* SphereNewCom;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float RunningTime;
 
-	UPROPERTY(VisibleAnywhere)
-	USphereComponent* SphereNewCom;
+
 
 
 
