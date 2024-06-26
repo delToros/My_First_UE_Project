@@ -13,6 +13,8 @@
 #include "Items/Weapons/Weapon.h"
 #include "DataObjects/Enums.h"
 #include "Animation/AnimMontage.h"
+#include "Components/BoxComponent.h"
+
 
 // Sets default values
 AHero::AHero()
@@ -254,6 +256,14 @@ void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 		EnhancedInputComponent->BindAction(EKeyAction, ETriggerEvent::Triggered, this, &AHero::EKeyPressed);
 
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &AHero::MainAttack);
+	}
+}
+
+void AHero::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled)
+{
+	if (EquipWeapon && EquipWeapon->GetWeaponBox())
+	{
+		EquipWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
 	}
 }
 
