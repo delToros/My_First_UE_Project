@@ -22,4 +22,9 @@ class MYPROJECT_API IHitInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+
+	// = 0 - pure virtual function
+	virtual void GetHit() = 0;
+
+
 };
