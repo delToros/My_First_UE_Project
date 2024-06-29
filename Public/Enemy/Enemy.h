@@ -7,6 +7,8 @@
 #include "Interfaces/HitInterface.h"
 #include "Enemy.generated.h"
 
+class UAnimMontage;
+
 UCLASS()
 class MYPROJECT_API AEnemy : public ACharacter, public IHitInterface
 {
@@ -29,5 +31,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void PlayHitReactMontage(const FName& SectionName);
 
+private:
+
+	//Animation montages
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* HitReactMontage;
 };
