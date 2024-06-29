@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "MyProject/DebugMacros.h"
+#include "Kismet/KismetSystemLibrary.h" // For drawing debug arrow
 
 // Sets default values
 AEnemy::AEnemy()
@@ -57,5 +58,51 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 {
 	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
 	PlayHitReactMontage(FName("FromLeft"));
+
+	// Calculating DOT PRODUCT
+	// 1. setup 2 vectors
+	const FVector Forward = GetActorForwardVector();
+	// Added later - so that debug arrows point in the same z location
+	const FVector ImactLowered(ImpactPoint.X, ImpactPoint.Y, GetActorLocation().Z);
+	const FVector ToHit = (ImactLowered - GetActorLocation()).GetSafeNormal(); //GetSafeNormal - normalize vectors. + Here we can use Impact Point instead of lowered
+
+	// 2. get angle between these 2 vectors
+		// 2.1 Find dot product
+	const double CosTheta = FVector::DotProduct(Forward, ToHit);
+	// Explanation
+	// Forward * ToHit = |Forward||ToHit| * cos(theta)
+	// |Forward| = 1, |ToHit| = 1 (normalized), so Forward * ToHit = cos(theta)
+
+		// 2.2 Get arc cos
+	double Theta = FMath::Acos(CosTheta); // Take the inverse cosine (arc-cosine) of cos(theta) to get theta
+	// Result here is radians
+
+		// 2.3 Convert from radians to degrees
+	Theta = FMath::RadiansToDegrees(Theta);
+
+	if (GEngine)
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::Printf(TEXT("Thetd: %f"), Theta));
+	}
+	
+	// Arrow from enemy location straight out
+	UKismetSystemLibrary::DrawDebugArrow(
+		this,
+		GetActorLocation(),
+		GetActorLocation() + Forward * 60.f,
+		5.f,
+		FColor::Red,
+		5.f
+	);
+
+	// Arrow from enemy location to the hit location
+	UKismetSystemLibrary::DrawDebugArrow(
+		this,
+		GetActorLocation(),
+		GetActorLocation() + ToHit * 60.f,
+		5.f,
+		FColor::Green,
+		5.f
+	);
 }
 
