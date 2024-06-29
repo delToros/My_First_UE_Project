@@ -24,7 +24,7 @@ class MYPROJECT_API IHitInterface
 public:
 
 	// = 0 - pure virtual function
-	virtual void GetHit() = 0;
+	virtual void GetHit(const FVector& ImpactPoint) = 0;
 
 
 };
