@@ -57,7 +57,6 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::GetHit(const FVector& ImpactPoint)
 {
 	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
-	PlayHitReactMontage(FName("FromLeft"));
 
 	// Calculating DOT PRODUCT
 	// 1. setup 2 vectors
@@ -96,6 +95,25 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 		FColor::Blue,
 		5.f
 	);
+
+	// Default value instead of last else
+	FName Section("FromBack");
+
+	if (Theta >= -45.f && Theta < 45.f)
+	{
+		Section = FName("FromFront");
+	}
+	else if (Theta >= -135.f && Theta < -45.f)
+	{
+		Section = FName("FromLeft");
+	}
+	else if (Theta >= 45.f && Theta < 135.f)
+	{
+		Section = FName("FromRight");
+	}
+	
+	PlayHitReactMontage(Section);
+	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, Section.ToString());
 
 	if (GEngine)
 	{
