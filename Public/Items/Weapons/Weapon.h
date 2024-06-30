@@ -26,6 +26,8 @@ public:
 
 	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox;  }
 
+	TArray<AActor*> IgnoreActors;
+
 protected:
 
 	virtual void BeginPlay() override;

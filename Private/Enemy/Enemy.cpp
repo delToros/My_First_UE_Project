@@ -58,6 +58,11 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 {
 	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
 
+	DirectionalHitReact(ImpactPoint);
+}
+
+void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
+{
 	// Calculating DOT PRODUCT
 	// 1. setup 2 vectors
 	const FVector Forward = GetActorForwardVector();
@@ -66,23 +71,23 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 	const FVector ToHit = (ImactLowered - GetActorLocation()).GetSafeNormal(); //GetSafeNormal - normalize vectors. + Here we can use Impact Point instead of lowered
 
 	// 2. get angle between these 2 vectors
-		// 2.1 Find dot product
+	// 2.1 Find dot product
 	const double CosTheta = FVector::DotProduct(Forward, ToHit);
 	// Explanation
 	// Forward * ToHit = |Forward||ToHit| * cos(theta)
 	// |Forward| = 1, |ToHit| = 1 (normalized), so Forward * ToHit = cos(theta)
 
-		// 2.2 Get arc cos
+	// 2.2 Get arc cos
 	double Theta = FMath::Acos(CosTheta); // Take the inverse cosine (arc-cosine) of cos(theta) to get theta
 	// Result here is radians
 
-		// 2.3 Convert from radians to degrees
+	// 2.3 Convert from radians to degrees
 	Theta = FMath::RadiansToDegrees(Theta);
-	
+
 	// 4. Calculate Cross Product and draw lkine
 	const FVector CrossProduct = FVector::CrossProduct(Forward, ToHit);
-		
-		// 4.1 Checke, if Cross Product points down, Theta should be negative
+
+	// 4.1 Checke, if Cross Product points down, Theta should be negative
 	if (CrossProduct.Z < 0)
 	{
 		Theta *= -1.f;
@@ -111,7 +116,7 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 	{
 		Section = FName("FromRight");
 	}
-	
+
 	PlayHitReactMontage(Section);
 	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, Section.ToString());
 
@@ -119,7 +124,7 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 	{
 		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, FString::Printf(TEXT("Thetd: %f"), Theta));
 	}
-	
+
 	// Arrow from enemy location straight out
 	UKismetSystemLibrary::DrawDebugArrow(
 		this,
