@@ -6,6 +6,7 @@
 #include "Components/CapsuleComponent.h"
 #include "MyProject/DebugMacros.h"
 #include "Kismet/KismetSystemLibrary.h" // For drawing debug arrow
+#include "Kismet/GameplayStatics.h" // For sounds
 
 // Sets default values
 AEnemy::AEnemy()
@@ -59,6 +60,16 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
 
 	DirectionalHitReact(ImpactPoint);
+
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			HitSound,
+			ImpactPoint
+		);
+	}
+
 }
 
 void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
