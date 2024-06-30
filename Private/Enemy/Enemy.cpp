@@ -79,6 +79,23 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 
 		// 2.3 Convert from radians to degrees
 	Theta = FMath::RadiansToDegrees(Theta);
+	
+	// 4. Calculate Cross Product and draw lkine
+	const FVector CrossProduct = FVector::CrossProduct(Forward, ToHit);
+		
+		// 4.1 Checke, if Cross Product points down, Theta should be negative
+	if (CrossProduct.Z < 0)
+	{
+		Theta *= -1.f;
+	}
+	UKismetSystemLibrary::DrawDebugArrow(
+		this,
+		GetActorLocation(),
+		GetActorLocation() + CrossProduct * 100.f,
+		5.f,
+		FColor::Blue,
+		5.f
+	);
 
 	if (GEngine)
 	{
