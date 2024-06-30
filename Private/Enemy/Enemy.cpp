@@ -57,7 +57,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEnemy::GetHit(const FVector& ImpactPoint)
 {
-	DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+	//DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
 
 	DirectionalHitReact(ImpactPoint);
 
@@ -66,6 +66,15 @@ void AEnemy::GetHit(const FVector& ImpactPoint)
 		UGameplayStatics::PlaySoundAtLocation(
 			this,
 			HitSound,
+			ImpactPoint
+		);
+	}
+
+	if (HitParticles && GetWorld()) // Get World - is just being extra safe, not neccecery
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			HitParticles,
 			ImpactPoint
 		);
 	}
@@ -103,6 +112,7 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
 	{
 		Theta *= -1.f;
 	}
+	/*
 	UKismetSystemLibrary::DrawDebugArrow(
 		this,
 		GetActorLocation(),
@@ -111,6 +121,7 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
 		FColor::Blue,
 		5.f
 	);
+	*/
 
 	// Default value instead of last else
 	FName Section("FromBack");
@@ -129,6 +140,8 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
 	}
 
 	PlayHitReactMontage(Section);
+	
+	/*
 	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Red, Section.ToString());
 
 	if (GEngine)
@@ -155,5 +168,6 @@ void AEnemy::DirectionalHitReact(const FVector& ImpactPoint)
 		FColor::Green,
 		5.f
 	);
+	*/
 }
 

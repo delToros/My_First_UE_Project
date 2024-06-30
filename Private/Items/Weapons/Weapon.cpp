@@ -107,7 +107,7 @@ void AWeapon::OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		ETraceTypeQuery::TraceTypeQuery1,
 		false,//BtraceComplex - too expensive
 		ActorsToIgnore,
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
 		BoxHit,//Special var for storing box hit
 		true //Ignore self. Required, but duplicates Actors to ignore
 	);
