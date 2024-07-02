@@ -24,7 +24,8 @@ class MYPROJECT_API IHitInterface
 public:
 
 	// = 0 - pure virtual function
-	virtual void GetHit(const FVector& ImpactPoint) = 0;
+	UFUNCTION(BlueprintNativeEvent)
+	void GetHit(const FVector& ImpactPoint);
 
 
 };
