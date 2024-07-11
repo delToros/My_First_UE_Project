@@ -50,7 +50,7 @@ protected:
 	virtual void EndSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	// Better to use VisibleAnyWhere with static Mesh components
-	UPROPERTY(BlueprintReadOnly) // with this var will participe in reflection system (garbage collection
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) // with this var will participe in reflection system (garbage collection
 	UStaticMeshComponent* ItemMesh; // This creates empty pointer
 
 	EItemState ItemState = EItemState::EIS_Hovering;
