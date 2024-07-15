@@ -28,8 +28,16 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Move it from private + below -> for disabling collisions
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	UGeometryCollectionComponent* GeometryCollection;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	class UCapsuleComponent* Capsule;
+
 private:
 
-	UPROPERTY(VisibleAnywhere)
-	UGeometryCollectionComponent* GeometryCollection;
+	UPROPERTY(EditAnywhere, Category = "Breakable Properties")
+	TSubclassOf<class ATreasure> TreasureClass; // This is forward declaration within
+	// This restrics us to use only classes derived from treasure
 };

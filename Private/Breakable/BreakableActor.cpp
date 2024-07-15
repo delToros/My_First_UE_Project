@@ -3,6 +3,8 @@
 
 #include "Breakable/BreakableActor.h"
 #include "GeometryCollection/GeometryCollectionComponent.h"
+#include "Items/Treasure.h"
+#include "Components/CapsuleComponent.h" // for disabling collisions of breakable
 
 // Sets default values
 ABreakableActor::ABreakableActor()
@@ -16,6 +18,13 @@ ABreakableActor::ABreakableActor()
 
 	GeometryCollection->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 
+	// To disable collisions
+	GeometryCollection->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Ignore);
+
+	Capsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("Capsule"));
+	Capsule->SetupAttachment(GetRootComponent());
+	Capsule->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	Capsule->SetCollisionResponseToChannel(ECollisionChannel::ECC_Pawn, ECollisionResponse::ECR_Block);
 }
 
 // Called when the game starts or when spawned
@@ -34,5 +43,16 @@ void ABreakableActor::Tick(float DeltaTime)
 
 void ABreakableActor::GetHit_Implementation(const FVector& ImpactPoint)
 {
+	UWorld* World = GetWorld();
+	if (World && TreasureClass)
+	{
+		FVector Location = GetActorLocation();
+		Location.Z = 75.f;
+		World->SpawnActor<ATreasure>(
+			TreasureClass,
+			Location,
+			GetActorRotation()
+		);
+	}
 }
 
