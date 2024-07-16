@@ -38,6 +38,9 @@ protected:
 private:
 
 	UPROPERTY(EditAnywhere, Category = "Breakable Properties")
-	TSubclassOf<class ATreasure> TreasureClass; // This is forward declaration within
+	// TSubclassOf<class ATreasure> TreasureClass; // This is forward declaration within
 	// This restrics us to use only classes derived from treasure
+
+	// Instead of single var (above) we will use tarray
+	TArray<TSubclassOf<class ATreasure>> TreasureClasses;
 };
