@@ -43,4 +43,7 @@ private:
 
 	// Instead of single var (above) we will use tarray
 	TArray<TSubclassOf<class ATreasure>> TreasureClasses;
+
+	//To avoid infinite loop
+	bool bBroken = false;
 };
