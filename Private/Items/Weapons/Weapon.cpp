@@ -8,6 +8,7 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Interfaces/HitInterface.h"
+#include "NiagaraComponent.h"
 
 AWeapon::AWeapon()
 {
@@ -44,6 +45,12 @@ void AWeapon::Equip(USceneComponent* InParent, FName InSocketName)
 	if (SphereNewCom)
 	{
 		SphereNewCom->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+
+	//Deactivate EmbersEffect when weapon is picked up
+	if (EmbersEffect)
+	{
+		EmbersEffect->Deactivate();
 	}
 }
 
