@@ -7,6 +7,7 @@
 #include "MyProject/DebugMacros.h"
 #include "Kismet/KismetSystemLibrary.h" // For drawing debug arrow
 #include "Kismet/GameplayStatics.h" // For sounds
+#include "Components/AttributeComponent.h" // for attributes
 
 // Sets default values
 AEnemy::AEnemy()
@@ -22,6 +23,8 @@ AEnemy::AEnemy()
 
 	//Enable Overlap events
 	GetMesh()->SetGenerateOverlapEvents(true);
+
+	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 }
 
 // Called when the game starts or when spawned
