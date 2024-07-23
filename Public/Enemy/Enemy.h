@@ -40,6 +40,9 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	class UAttributeComponent* Attributes;
 
+	UPROPERTY(VisibleAnywhere)
+	class UWidgetComponent* HealthBarWidget;
+
 	//Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* HitReactMontage;
