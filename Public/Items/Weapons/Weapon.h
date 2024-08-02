@@ -20,7 +20,7 @@ class MYPROJECT_API AWeapon : public AItem
 public:
 	AWeapon(); // This is constructor (why - becuase it same name as the class. And because it is constructor we do not need return type
 
-	void Equip(USceneComponent* InParent, FName InSocketName);
+	void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
 
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
 
@@ -57,4 +57,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* BoxTraceEnd;
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	float Damage = 20.f;
 };

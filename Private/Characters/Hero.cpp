@@ -105,7 +105,7 @@ void AHero::EKeyPressed()
 	if (OverlappingItem)
 	{
 		// Call the equip function from Weapons.cpp
-		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"));
+		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
 		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
 
 		OverlappingItem = nullptr; // otherwise it will always be true and not enter in else statement.

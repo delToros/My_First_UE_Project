@@ -29,6 +29,9 @@ public:
 
 	void DirectionalHitReact(const FVector& ImpactPoint);
 
+	// Function Cpoied from take damage
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
