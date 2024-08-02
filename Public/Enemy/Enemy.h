@@ -41,7 +41,7 @@ private:
 	class UAttributeComponent* Attributes;
 
 	UPROPERTY(VisibleAnywhere)
-	class UWidgetComponent* HealthBarWidget;
+	class UHealthBarComponent* HealthBarWidget;
 
 	//Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = Montages)

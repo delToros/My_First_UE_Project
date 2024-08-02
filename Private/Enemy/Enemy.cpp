@@ -8,7 +8,7 @@
 #include "Kismet/KismetSystemLibrary.h" // For drawing debug arrow
 #include "Kismet/GameplayStatics.h" // For sounds
 #include "Components/AttributeComponent.h" // for attributes
-#include "Components/WidgetComponent.h" // For WidgetComponent
+#include "HUD/HealthBarComponent.h" // For WidgetComponent - Changed to UHealthBarComponent
 
 // Sets default values
 AEnemy::AEnemy()
@@ -29,7 +29,7 @@ AEnemy::AEnemy()
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
 
 	// add health bar widget
-	HealthBarWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("Health Bar"));
+	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("Health Bar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
 
 }
@@ -38,6 +38,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	HealthBarWidget->SetHealthPercent(.1f);
 	
 }
 

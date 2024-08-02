@@ -13,5 +13,11 @@ UCLASS()
 class MYPROJECT_API UHealthBarComponent : public UWidgetComponent
 {
 	GENERATED_BODY()
+public:
+	void SetHealthPercent(float Percent);
+
+private:
+	UPROPERTY() // This is needed so that HealthBarWidget would always be null pointer
+	class UHealthBar* HealthBarWidget; // member variable instead of casting every time
 	
 };
