@@ -68,4 +68,11 @@ private:
 	UPROPERTY(EditAnywhere, Category = VisualEffects)
 	UParticleSystem* HitParticles;
 
+	//so it does not have nullptr
+	UPROPERTY()
+	AActor* CombatTraget;
+
+	UPROPERTY(EditAnywhere)
+	double CombatRadius = 500;
+
 };

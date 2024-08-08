@@ -39,6 +39,12 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
+	
+	// at the beginplay health bar is hidden
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(false);
+	}
 }
 
 void AEnemy::Die()
@@ -77,7 +83,17 @@ void AEnemy::Die()
 		}
 
 		AnimInstance->Montage_JumpToSection(SectionName, DeathMontage);
+
+		if (HealthBarWidget)
+		{
+			HealthBarWidget->SetVisibility(false);
+		}
 	}
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	SetLifeSpan(3.f);
+
 }
 
 void AEnemy::PlayHitReactMontage(const FName& SectionName)
@@ -95,6 +111,20 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (CombatTraget)
+	{
+		const double DistanceToTarget = (CombatTraget->GetActorLocation() - GetActorLocation()).Size();
+		if (DistanceToTarget > CombatRadius)
+		{
+			CombatTraget = nullptr;
+			if (HealthBarWidget)
+			{
+				HealthBarWidget->SetVisibility(false);
+			}
+		}
+	}
+
+
 }
 
 // Called to bind functionality to input
@@ -107,6 +137,12 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	//DRAW_SPHERE_COLOR(ImpactPoint, FColor::Orange);
+
+	//if hit - show healthbar
+	if (HealthBarWidget)
+	{
+		HealthBarWidget->SetVisibility(true);
+	}
 
 	// Check if has health after hit, if not - play death
 	if (Attributes && Attributes->isAlive())
@@ -237,7 +273,7 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 		HealthBarWidget->SetHealthPercent(Attributes->GetHealthPercent());
 	}
 
-
+	CombatTraget = EventInstigator->GetPawn();
 	return DamageAmount;
 }
 
