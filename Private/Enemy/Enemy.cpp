@@ -131,6 +131,18 @@ void AEnemy::Die()
 
 }
 
+bool AEnemy::InTargetRange(AActor* Target, double Radius)
+{
+	const double DistanceToTarget = (Target->GetActorLocation() - GetActorLocation()).Size();
+
+	// For debug purposes
+	DRAW_SPHERE_SINGLEFRAME(GetActorLocation());
+	DRAW_SPHERE_SINGLEFRAME(Target->GetActorLocation());
+	//
+
+	return DistanceToTarget <= Radius;
+}
+
 void AEnemy::PlayHitReactMontage(const FName& SectionName)
 {
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
@@ -149,7 +161,7 @@ void AEnemy::Tick(float DeltaTime)
 	if (CombatTraget)
 	{
 		const double DistanceToTarget = (CombatTraget->GetActorLocation() - GetActorLocation()).Size();
-		if (DistanceToTarget > CombatRadius)
+		if (!InTargetRange(CombatTraget, CombatRadius))// ! means NOT
 		{
 			CombatTraget = nullptr;
 			if (HealthBarWidget)
@@ -159,6 +171,38 @@ void AEnemy::Tick(float DeltaTime)
 		}
 	}
 
+	if (PatrolTarget && EnemyController)
+	{
+		if (InTargetRange(PatrolTarget, PatrolRadius))
+		{
+			// only go to new targets, not the same ones
+			TArray<AActor*> ValidTargets;
+			for (AActor* Target : PatrolTargets)
+			{
+				if (Target != PatrolTarget)
+				{
+					ValidTargets.AddUnique(Target);
+				}
+			}
+
+			// Select One target at Random
+			const int32 NumberOfPatrolTargets = ValidTargets.Num();
+
+			if (NumberOfPatrolTargets > 0)
+			{
+				const int32 SelectedTarget = FMath::RandRange(0, NumberOfPatrolTargets - 1);
+				AActor* Target = ValidTargets[SelectedTarget];
+				PatrolTarget = Target;
+
+				// Move to that target
+				FAIMoveRequest MoveRequest;
+				MoveRequest.SetGoalActor(PatrolTarget);
+				MoveRequest.SetAcceptanceRadius(15.f);
+				// FNavPathSharedPtr NavPath; this is optional input
+				EnemyController->MoveTo(MoveRequest);
+			}
+		}
+	}
 
 }
 

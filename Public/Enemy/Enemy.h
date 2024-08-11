@@ -40,6 +40,9 @@ protected:
 	// Handle enemies death
 	void Die();
 
+	// Handle targets (combat and patrol)
+	bool InTargetRange(AActor* Target, double Radius);
+
 	void PlayHitReactMontage(const FName& SectionName);
 
 	UPROPERTY(BlueprintReadOnly)
@@ -83,6 +86,10 @@ private:
 
 	UPROPERTY(EditInstanceOnly, Category = "AI Navigation")
 	TArray<AActor*> PatrolTargets;
+
+	// not recommended to set as = to acceptance radius, better bigger (rounding)
+	UPROPERTY(EditAnywhere)
+	double PatrolRadius = 200.f;
 
 	// Ai Controller
 	class AAIController* EnemyController;
