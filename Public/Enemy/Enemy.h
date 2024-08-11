@@ -22,6 +22,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void CheckPatrolTarget();
+
+	void CheckCombatTarget();
+
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -42,6 +46,11 @@ protected:
 
 	// Handle targets (combat and patrol)
 	bool InTargetRange(AActor* Target, double Radius);
+	
+	// Refactoring move yo target
+	void MoveToTarget(AActor* Target);
+
+	AActor* ChoosePatrolTarget();
 
 	void PlayHitReactMontage(const FName& SectionName);
 
@@ -93,5 +102,17 @@ private:
 
 	// Ai Controller
 	class AAIController* EnemyController;
+
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float WaitTimeMin = 5.f;
+
+	UPROPERTY(EditAnywhere, Category = "AI Navigation")
+	float WaittimeMax = 10.f;
+
+
+	// -- Timer items
+	FTimerHandle PatrolTimer;
+
+	void PatrolTimerFinished();
 
 };
