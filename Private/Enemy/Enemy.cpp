@@ -4,6 +4,7 @@
 #include "Enemy/Enemy.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "MyProject/DebugMacros.h"
 #include "Kismet/KismetSystemLibrary.h" // For drawing debug arrow
 #include "Kismet/GameplayStatics.h" // For sounds
@@ -31,6 +32,12 @@ AEnemy::AEnemy()
 	// add health bar widget
 	HealthBarWidget = CreateDefaultSubobject<UHealthBarComponent>(TEXT("Health Bar"));
 	HealthBarWidget->SetupAttachment(GetRootComponent());
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
+
 
 }
 
