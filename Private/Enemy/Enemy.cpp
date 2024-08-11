@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h" // For sounds
 #include "Components/AttributeComponent.h" // for attributes
 #include "HUD/HealthBarComponent.h" // For WidgetComponent - Changed to UHealthBarComponent
+#include "AIController.h" // For navigation
 
 // Sets default values
 AEnemy::AEnemy()
@@ -52,6 +53,33 @@ void AEnemy::BeginPlay()
 	{
 		HealthBarWidget->SetVisibility(false);
 	}
+
+	EnemyController = Cast<AAIController>(GetController());
+
+	// Strat navigation
+	if (EnemyController && PatrolTarget)
+	{
+		FAIMoveRequest MoveRequest;
+		MoveRequest.SetGoalActor(PatrolTarget);
+		MoveRequest.SetAcceptanceRadius(15.f);
+		FNavPathSharedPtr NavPath;
+		EnemyController->MoveTo(MoveRequest, &NavPath);
+		TArray<FNavPathPoint>& PathPoints = NavPath->GetPathPoints();
+		for (auto& Point : PathPoints)
+		{
+			const FVector& Location = Point.Location;
+			DrawDebugSphere(
+				GetWorld(),
+				Location,
+				12.f,
+				12,
+				FColor::Green,
+				false,
+				10.f
+			);
+		}
+	}
+
 }
 
 void AEnemy::Die()
