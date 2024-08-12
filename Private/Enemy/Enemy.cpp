@@ -230,11 +230,15 @@ void AEnemy::CheckCombatTarget()
 {
 	if (!InTargetRange(CombatTraget, CombatRadius))// ! means NOT
 	{
+		// Outside combat radius - loose interest
 		CombatTraget = nullptr;
 		if (HealthBarWidget)
 		{
 			HealthBarWidget->SetVisibility(false);
 		}
+		EnemyState = EEnemyState::EES_Patrolling;
+		GetCharacterMovement()->MaxWalkSpeed = 180;
+		MoveToTarget(PatrolTarget);
 	}
 }
 
