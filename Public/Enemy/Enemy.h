@@ -10,6 +10,8 @@
 
 class UAnimMontage;
 
+class UPawnSensingComponent;
+
 UCLASS()
 class MYPROJECT_API AEnemy : public ACharacter, public IHitInterface
 {
@@ -47,10 +49,15 @@ protected:
 	// Handle targets (combat and patrol)
 	bool InTargetRange(AActor* Target, double Radius);
 	
-	// Refactoring move yo target
+	// Refactoring move to target
 	void MoveToTarget(AActor* Target);
 
 	AActor* ChoosePatrolTarget();
+
+	//For Pawn Sensing
+	//we need UFunction because it is a delegate
+	UFUNCTION()
+	void PawnSeen(APawn* SeenPawn);
 
 	void PlayHitReactMontage(const FName& SectionName);
 
@@ -60,13 +67,18 @@ protected:
 
 private:
 
+	// -- Components 
+
 	UPROPERTY(VisibleAnywhere)
 	class UAttributeComponent* Attributes;
 
 	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
 
-	//Animation montages
+	UPROPERTY(VisibleAnywhere)
+	UPawnSensingComponent* PawnSensing;
+
+	// -- Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* HitReactMontage;
 

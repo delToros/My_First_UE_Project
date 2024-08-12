@@ -11,6 +11,7 @@
 #include "Components/AttributeComponent.h" // for attributes
 #include "HUD/HealthBarComponent.h" // For WidgetComponent - Changed to UHealthBarComponent
 #include "AIController.h" // For navigation
+#include "Perception/PawnSensingComponent.h" 
 
 // Sets default values
 AEnemy::AEnemy()
@@ -39,7 +40,10 @@ AEnemy::AEnemy()
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
 
-
+	// PawnSensingComponent
+	PawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing")); // we do need to attach it
+	PawnSensing->SightRadius = 4000.f;
+	PawnSensing->SetPeripheralVisionAngle(45.f);
 }
 
 // Called when the game starts or when spawned
@@ -58,6 +62,11 @@ void AEnemy::BeginPlay()
 
 	// Strat navigation
 	MoveToTarget(PatrolTarget);
+
+	if (PawnSensing)
+	{
+		PawnSensing->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
+	}
 
 }
 
@@ -152,6 +161,11 @@ AActor* AEnemy::ChoosePatrolTarget()
 	}
 
 	return nullptr;
+}
+
+void AEnemy::PawnSeen(APawn* SeenPawn)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Pawn Seen!"));
 }
 
 void AEnemy::PlayHitReactMontage(const FName& SectionName)
