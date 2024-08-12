@@ -127,4 +127,7 @@ private:
 
 	void PatrolTimerFinished();
 
+
+	// -- enemy states
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 };

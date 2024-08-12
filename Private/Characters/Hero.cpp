@@ -61,6 +61,8 @@ void AHero::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Tags.Add(FName("MainHero"));
+
 	if (APlayerController* HeroController = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(HeroController->GetLocalPlayer()))
@@ -68,6 +70,8 @@ void AHero::BeginPlay()
 			Subsystem->AddMappingContext(HeroMappingContext, 0);
 		}
 	}
+
+
 
 }
 
