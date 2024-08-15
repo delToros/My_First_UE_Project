@@ -166,17 +166,18 @@ AActor* AEnemy::ChoosePatrolTarget()
 void AEnemy::PawnSeen(APawn* SeenPawn)
 {
 	if (EnemyState == EEnemyState::EES_Chasing) return;
-
 	if (SeenPawn->ActorHasTag(FName("MainHero")))
 	{
-		EnemyState = EEnemyState::EES_Chasing;
 		GetWorldTimerManager().ClearTimer(PatrolTimer);
-
 		GetCharacterMovement()->MaxWalkSpeed = 600.f;
-
 		CombatTraget = SeenPawn;
 
-		MoveToTarget(CombatTraget);
+		if (EnemyState != EEnemyState::EES_Attacking)
+		{
+			EnemyState = EEnemyState::EES_Chasing;
+			MoveToTarget(CombatTraget);
+			UE_LOG(LogTemp, Warning, TEXT("Seen Player"));
+		}
 	}
 }
 
@@ -239,6 +240,22 @@ void AEnemy::CheckCombatTarget()
 		EnemyState = EEnemyState::EES_Patrolling;
 		GetCharacterMovement()->MaxWalkSpeed = 180;
 		MoveToTarget(PatrolTarget);
+		UE_LOG(LogTemp, Warning, TEXT("Lose Interes"));
+	}
+	else if (!InTargetRange(CombatTraget, AttackRadius) && EnemyState != EEnemyState::EES_Chasing) // additional check  to avoid spamming
+	{
+		// outside attack range - chase char
+		EnemyState = EEnemyState::EES_Chasing;
+		GetCharacterMovement()->MaxWalkSpeed = 600.f;
+		MoveToTarget(CombatTraget);
+		UE_LOG(LogTemp, Warning, TEXT("Chase player"));
+	}
+	else if (InTargetRange(CombatTraget, AttackRadius) && EnemyState != EEnemyState::EES_Attacking)
+	{
+		// Inside attack range - attack character
+		EnemyState = EEnemyState::EES_Attacking;
+		// TODO: attack montage
+		UE_LOG(LogTemp, Warning, TEXT("Atack"));
 	}
 }
 
