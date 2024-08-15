@@ -3,17 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
-#include "Interfaces/HitInterface.h"
+#include "Characters/BaseCharacter.h"
 #include "DataObjects/Enums.h"
 #include "Enemy.generated.h"
-
-class UAnimMontage;
 
 class UPawnSensingComponent;
 
 UCLASS()
-class MYPROJECT_API AEnemy : public ACharacter, public IHitInterface
+class MYPROJECT_API AEnemy : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -34,8 +31,6 @@ public:
 	//Overriding GetHit fornm Interfaces
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 
-	void DirectionalHitReact(const FVector& ImpactPoint);
-
 	// Function Cpoied from take damage
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
@@ -44,7 +39,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	// Handle enemies death
-	void Die();
+	virtual void Die() override;
 
 	// Handle targets (combat and patrol)
 	bool InTargetRange(AActor* Target, double Radius);
@@ -59,7 +54,6 @@ protected:
 	UFUNCTION()
 	void PawnSeen(APawn* SeenPawn);
 
-	void PlayHitReactMontage(const FName& SectionName);
 
 	UPROPERTY(BlueprintReadOnly)
 	EDeathPose DeathPose = EDeathPose::EDP_Alive;
@@ -69,28 +63,13 @@ private:
 
 	// -- Components 
 
-	UPROPERTY(VisibleAnywhere)
-	class UAttributeComponent* Attributes;
+
 
 	UPROPERTY(VisibleAnywhere)
 	class UHealthBarComponent* HealthBarWidget;
 
 	UPROPERTY(VisibleAnywhere)
 	UPawnSensingComponent* PawnSensing;
-
-	// -- Animation montages
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
-	UAnimMontage* HitReactMontage;
-
-	// Death montage
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
-	UAnimMontage* DeathMontage;
-
-	UPROPERTY(EditAnywhere, Category = Sounds)
-	USoundBase* HitSound;
-
-	UPROPERTY(EditAnywhere, Category = VisualEffects)
-	UParticleSystem* HitParticles;
 
 	//so it does not have nullptr
 	UPROPERTY()

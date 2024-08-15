@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+// #include "GameFramework/Character.h" <- delete
 #include "InputActionValue.h"
+#include "BaseCharacter.h"
 #include "DataObjects/Enums.h"
 #include "Hero.generated.h"
 
@@ -14,12 +15,10 @@ class USpringArmComponent;
 class UCameraComponent;
 class UGroomComponent;
 class AItem;
-class AWeapon;
-
 
 
 UCLASS()
-class MYPROJECT_API AHero : public ACharacter
+class MYPROJECT_API AHero : public ABaseCharacter
 {
 	GENERATED_BODY()
 
@@ -35,8 +34,7 @@ public:
 
 	//virtual void Jump() override;
 
-	UFUNCTION(BlueprintCallable)
-	void SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled);
+	
 
 protected:
 	// Called when the game starts or when spawned
@@ -67,17 +65,16 @@ protected:
 
 	void EKeyPressed();
 
-	void MainAttack();
+	virtual void MainAttack() override;
 
 	// Montage Functions
-	void PlayAttacMontage();
+	virtual void PlayAttacMontage() override;
 
 	void PlayEquipMontage(FName SectionName);
 
-	UFUNCTION(BlueprintCallable)
-	void AttackEnd();
+	virtual void AttackEnd() override;
 
-	bool CanAttack();
+	virtual bool CanAttack() override;
 
 	bool CanEquip();
 
@@ -116,15 +113,12 @@ private:
 	UPROPERTY(VisibleInstanceOnly)
 	AItem* OverlappingItem;
 
-	UPROPERTY(VisibleAnywhere, Category = Weapon)
-	AWeapon* EquipWeapon;
+
 
 	/*
 	Animation montages
 	*/
 
-	UPROPERTY(EditDefaultsOnly, Category = Montages)
-	UAnimMontage* AttackMontage;
 
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* EquipMontage;

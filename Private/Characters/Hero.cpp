@@ -263,15 +263,5 @@ void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	}
 }
 
-void AHero::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled)
-{
-	if (EquipWeapon && EquipWeapon->GetWeaponBox())
-	{
-		EquipWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
-
-		EquipWeapon->IgnoreActors.Empty();
-	}
-}
-
 
 
