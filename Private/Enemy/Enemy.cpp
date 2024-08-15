@@ -125,8 +125,8 @@ bool AEnemy::InTargetRange(AActor* Target, double Radius)
 	if (Target == nullptr) return false;
 	const double DistanceToTarget = (Target->GetActorLocation() - GetActorLocation()).Size();
 	// For debug purposes
-	DRAW_SPHERE_SINGLEFRAME(GetActorLocation());
-	DRAW_SPHERE_SINGLEFRAME(Target->GetActorLocation());
+	// DRAW_SPHERE_SINGLEFRAME(GetActorLocation());
+	// DRAW_SPHERE_SINGLEFRAME(Target->GetActorLocation());
 	//
 
 	return DistanceToTarget <= Radius;
@@ -176,7 +176,7 @@ void AEnemy::PawnSeen(APawn* SeenPawn)
 		{
 			EnemyState = EEnemyState::EES_Chasing;
 			MoveToTarget(CombatTraget);
-			UE_LOG(LogTemp, Warning, TEXT("Seen Player"));
+			// UE_LOG(LogTemp, Warning, TEXT("Seen Player"));
 		}
 	}
 }
@@ -240,7 +240,7 @@ void AEnemy::CheckCombatTarget()
 		EnemyState = EEnemyState::EES_Patrolling;
 		GetCharacterMovement()->MaxWalkSpeed = 180;
 		MoveToTarget(PatrolTarget);
-		UE_LOG(LogTemp, Warning, TEXT("Lose Interes"));
+		// UE_LOG(LogTemp, Warning, TEXT("Lose Interes"));
 	}
 	else if (!InTargetRange(CombatTraget, AttackRadius) && EnemyState != EEnemyState::EES_Chasing) // additional check  to avoid spamming
 	{
@@ -248,14 +248,14 @@ void AEnemy::CheckCombatTarget()
 		EnemyState = EEnemyState::EES_Chasing;
 		GetCharacterMovement()->MaxWalkSpeed = 600.f;
 		MoveToTarget(CombatTraget);
-		UE_LOG(LogTemp, Warning, TEXT("Chase player"));
+		// UE_LOG(LogTemp, Warning, TEXT("Chase player"));
 	}
 	else if (InTargetRange(CombatTraget, AttackRadius) && EnemyState != EEnemyState::EES_Attacking)
 	{
 		// Inside attack range - attack character
 		EnemyState = EEnemyState::EES_Attacking;
 		// TODO: attack montage
-		UE_LOG(LogTemp, Warning, TEXT("Atack"));
+		// UE_LOG(LogTemp, Warning, TEXT("Atack"));
 	}
 }
 
@@ -406,6 +406,9 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	}
 
 	CombatTraget = EventInstigator->GetPawn();
+	EnemyState = EEnemyState::EES_Chasing;
+	GetCharacterMovement()->MaxWalkSpeed = 600.f;
+	MoveToTarget(CombatTraget);
 	return DamageAmount;
 }
 
