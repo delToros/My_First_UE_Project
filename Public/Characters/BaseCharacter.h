@@ -45,11 +45,18 @@ protected:
 
 	void DirectionalHitReact(const FVector& ImpactPoint);
 
+	void PlayHitSound(const FVector& ImpactPoint);
+
+	void SpawnHitParticles(const FVector& ImpactPoint);
+
+	virtual void HandleDamage(float DamageAmount);
+
 	// Death montage
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* DeathMontage;
 
 	virtual bool CanAttack();
+	bool IsAlive();
 
 	UFUNCTION(BlueprintCallable)
 	virtual void AttackEnd();

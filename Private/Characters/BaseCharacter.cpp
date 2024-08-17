@@ -5,7 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Items/Weapons/Weapon.h"
 #include "Components/AttributeComponent.h" // for attributes
-
+#include "Kismet/GameplayStatics.h" // For sounds
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -137,9 +137,46 @@ void ABaseCharacter::DirectionalHitReact(const FVector& ImpactPoint)
 	*/
 }
 
+void ABaseCharacter::PlayHitSound(const FVector& ImpactPoint)
+{
+	if (HitSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(
+			this,
+			HitSound,
+			ImpactPoint
+		);
+	}
+}
+
+void ABaseCharacter::SpawnHitParticles(const FVector& ImpactPoint)
+{
+	if (HitParticles && GetWorld()) // Get World - is just being extra safe, not neccecery
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(
+			GetWorld(),
+			HitParticles,
+			ImpactPoint
+		);
+	}
+}
+
+void ABaseCharacter::HandleDamage(float DamageAmount)
+{
+	if (Attributes)
+	{
+		Attributes->ReceiveDamage(DamageAmount);
+	}
+}
+
 bool ABaseCharacter::CanAttack()
 {
 	return false;
+}
+
+bool ABaseCharacter::IsAlive()
+{
+	return Attributes && Attributes->isAlive();
 }
 
 void ABaseCharacter::AttackEnd()

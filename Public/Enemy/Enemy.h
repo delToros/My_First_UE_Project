@@ -25,9 +25,6 @@ public:
 
 	void CheckCombatTarget();
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
 	//Overriding GetHit fornm Interfaces
 	virtual void GetHit_Implementation(const FVector& ImpactPoint) override;
 
@@ -55,6 +52,10 @@ protected:
 	virtual void MainAttack() override;
 	virtual void PlayAttacMontage() override;
 
+	virtual bool CanAttack() override;
+
+	virtual void HandleDamage(float DamageAmount) override;
+
 	//For Pawn Sensing
 	//we need UFunction because it is a delegate
 	UFUNCTION()
@@ -62,7 +63,11 @@ protected:
 
 
 	UPROPERTY(BlueprintReadOnly)
-	EDeathPose DeathPose = EDeathPose::EDP_Alive;
+	EDeathPose DeathPose;
+
+	// -- enemy states
+	UPROPERTY(BlueprintReadOnly)
+	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
 
 private:
@@ -110,6 +115,37 @@ private:
 	UPROPERTY(EditAnywhere, Category = "AI Navigation")
 	float WaittimeMax = 10.f;
 
+	//AI behavior
+	void HideHealthBar();
+	void ShowHealthBar();
+	void LoseInterest();
+	void StartPatrolling();
+	void ChaseTarget();
+	bool IsOutsideCombatRadius();
+	bool IsOutsideAttackRadius();
+	bool IsInsideAtackRadius();
+	bool IsChasing();
+	bool IsAttacking();
+	bool IsDead();
+	bool IsEngaged();
+	void ClearPatrolTimer();
+
+	FTimerHandle AttackTimer;
+
+	void StartAttackTimer();
+	void ClearAttackTimer();
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float AttackMin = 0.5f;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float AttackMax = 1.f;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float PatrollingSpeed = 180.f;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float ChasingSpeed = 600.f;
 
 	// -- Timer items
 	FTimerHandle PatrolTimer;
@@ -117,6 +153,5 @@ private:
 	void PatrolTimerFinished();
 
 
-	// -- enemy states
-	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
+
 };
