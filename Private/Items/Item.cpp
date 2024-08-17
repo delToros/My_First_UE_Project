@@ -17,6 +17,10 @@ AItem::AItem()
 	// Creating new static Mesh Component. to do that -> creating default subobject
 	ItemMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("ItemMeshComponent"));
 
+	//Disable collisions for all items
+	ItemMesh->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	ItemMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	RootComponent = ItemMesh;
 
 	// Creating sphere for collisions

@@ -11,7 +11,8 @@
 #include "Components/AttributeComponent.h" // for attributes
 #include "HUD/HealthBarComponent.h" // For WidgetComponent - Changed to UHealthBarComponent
 #include "AIController.h" // For navigation
-#include "Perception/PawnSensingComponent.h" 
+#include "Perception/PawnSensingComponent.h"
+#include "Items/Weapons/Weapon.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -65,6 +66,13 @@ void AEnemy::BeginPlay()
 		PawnSensing->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
 	}
 
+	UWorld* World = GetWorld();
+	if (World && WeaponClass)
+	{
+		AWeapon* DefaultWeapon = World->SpawnActor<AWeapon>(WeaponClass);
+		DefaultWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+		EquipWeapon = DefaultWeapon;
+	}
 }
 
 void AEnemy::Die()
@@ -307,5 +315,13 @@ float AEnemy::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AC
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 	MoveToTarget(CombatTraget);
 	return DamageAmount;
+}
+
+void AEnemy::Destroyed()
+{
+	if (EquipWeapon)
+	{
+		EquipWeapon->Destroy();
+	}
 }
 
