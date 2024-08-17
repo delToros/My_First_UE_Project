@@ -135,7 +135,7 @@ void AHero::EKeyPressed()
 
 void AHero::MainAttack()
 {
-
+	Super::MainAttack();
 	if (CanAttack())
 	{
 		PlayAttacMontage();
@@ -186,6 +186,7 @@ void AHero::FinishEquipping()
 
 void AHero::PlayAttacMontage()
 {
+	Super::PlayAttacMontage();
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AnimInstance && AttackMontage)
 	{

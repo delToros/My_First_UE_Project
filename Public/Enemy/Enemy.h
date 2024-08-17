@@ -52,6 +52,9 @@ protected:
 
 	AActor* ChoosePatrolTarget();
 
+	virtual void MainAttack() override;
+	virtual void PlayAttacMontage() override;
+
 	//For Pawn Sensing
 	//we need UFunction because it is a delegate
 	UFUNCTION()
