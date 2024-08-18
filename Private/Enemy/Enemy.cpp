@@ -86,6 +86,7 @@ void AEnemy::Die()
 
 	SetLifeSpan(DeathLifeSpan);
 
+	GetCharacterMovement()->bOrientRotationToMovement = false;
 }
 
 bool AEnemy::InTargetRange(AActor* Target, double Radius)
