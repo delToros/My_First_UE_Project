@@ -36,7 +36,7 @@ protected:
 	virtual void Die();
 
 	// Montage Functions
-	virtual void PlayAttacMontage();
+
 	// -- Animation montages
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* HitReactMontage;
@@ -51,9 +51,23 @@ protected:
 
 	virtual void HandleDamage(float DamageAmount);
 
+	void PlayMontageSection(UAnimMontage* Montage, const FName& SectionName);
+
+	int32 PlayRandomMontageSection(UAnimMontage* Montage, const TArray<FName>& SectionNames);
+
+	virtual int32 PlayAttackMontage();
+	virtual int32 PlayDeathMontage();
+	void DisableCapsule();
+
 	// Death montage
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* DeathMontage;
+
+	UPROPERTY(EditAnywhere, Category = Monatges)
+	TArray<FName> AttackMonatgeSections;
+
+	UPROPERTY(EditAnywhere, Category = Monatges)
+	TArray<FName> DeathMonatgeSections;
 
 	virtual bool CanAttack();
 	bool IsAlive();

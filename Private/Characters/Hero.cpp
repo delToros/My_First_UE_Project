@@ -138,7 +138,7 @@ void AHero::MainAttack()
 	Super::MainAttack();
 	if (CanAttack())
 	{
-		PlayAttacMontage();
+		PlayAttackMontage();
 		ActionState = EActionState::EAS_Attacking;
 	}
 	
@@ -184,36 +184,7 @@ void AHero::FinishEquipping()
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
-void AHero::PlayAttacMontage()
-{
-	Super::PlayAttacMontage();
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-	if (AnimInstance && AttackMontage)
-	{
-		AnimInstance->Montage_Play(AttackMontage); // This will play montage
 
-		// to select random montage to play
-		const int32 Selection = FMath::RandRange(0, 1);
-		FName SectionName = FName();
-
-		switch (Selection)
-		{
-		case 0:
-			SectionName = FName("Attack1");
-			break;
-
-		case 1:
-			SectionName = FName("Attack2");
-			break;
-
-		default:
-			// cant leave empty
-			break;
-		}
-
-		AnimInstance->Montage_JumpToSection(SectionName, AttackMontage);
-	}
-}
 
 void AHero::PlayEquipMontage(FName SectionName)
 {

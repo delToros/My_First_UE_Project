@@ -50,11 +50,15 @@ protected:
 	AActor* ChoosePatrolTarget();
 
 	virtual void MainAttack() override;
-	virtual void PlayAttacMontage() override;
 
 	virtual bool CanAttack() override;
 
 	virtual void HandleDamage(float DamageAmount) override;
+
+	virtual int32 PlayDeathMontage() override;
+
+	UPROPERTY(EditAnywhere, Category = Combat)
+	float DeathLifeSpan = 8.f;
 
 	//For Pawn Sensing
 	//we need UFunction because it is a delegate
@@ -63,7 +67,7 @@ protected:
 
 
 	UPROPERTY(BlueprintReadOnly)
-	EDeathPose DeathPose;
+	TEnumAsByte<EDeathPose> DeathPose;
 
 	// -- enemy states
 	UPROPERTY(BlueprintReadOnly)

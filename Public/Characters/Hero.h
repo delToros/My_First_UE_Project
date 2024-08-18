@@ -68,7 +68,6 @@ protected:
 	virtual void MainAttack() override;
 
 	// Montage Functions
-	virtual void PlayAttacMontage() override;
 
 	void PlayEquipMontage(FName SectionName);
 
