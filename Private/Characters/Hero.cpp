@@ -13,14 +13,13 @@
 #include "Items/Weapons/Weapon.h"
 #include "DataObjects/Enums.h"
 #include "Animation/AnimMontage.h"
-#include "Components/BoxComponent.h"
 
 
 // Sets default values
 AHero::AHero()
 {
 	// Set this character to call Tick() every frame. You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -106,28 +105,19 @@ void AHero::EKeyPressed()
 	AWeapon* OverlappingWeapon = Cast<AWeapon>(OverlappingItem);
 
 	// If Overlapping item is not null pointer
-	if (OverlappingItem)
+	if (OverlappingWeapon)
 	{
-		// Call the equip function from Weapons.cpp
-		OverlappingWeapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
-		CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
-
-		OverlappingItem = nullptr; // otherwise it will always be true and not enter in else statement.
-		EquipWeapon = OverlappingWeapon;
+		EquipWeapon(OverlappingWeapon);
 	}
 	else
 	{
 		if (CanDisarm())
 		{
-			PlayEquipMontage(FName("Disarm"));
-			CharacterState = ECharacterState::ECS_Unequipped;
-			ActionState = EActionState::EAS_EquippingWeapon;
+			Disarm();
 		}
-		else if (CanEquip())
+		else if (CanArm())
 		{
-			PlayEquipMontage(FName("Equip"));
-			CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
-			ActionState = EActionState::EAS_EquippingWeapon;
+			Arm();
 		}
 	}
 
@@ -150,11 +140,11 @@ bool AHero::CanAttack()
 		CharacterState != ECharacterState::ECS_Unequipped;
 }
 
-bool AHero::CanEquip()
+bool AHero::CanArm()
 {
 	return ActionState == EActionState::EAS_Unoccupied && 
 		CharacterState == ECharacterState::ECS_Unequipped &&
-		EquipWeapon;
+		EquippedWeapon;
 }
 
 bool AHero::CanDisarm()
@@ -165,17 +155,24 @@ bool AHero::CanDisarm()
 
 void AHero::Disarm()
 {
-	if (EquipWeapon)
+	PlayEquipMontage(FName("Disarm"));
+	CharacterState = ECharacterState::ECS_Unequipped;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
+
+void AHero::AttachWeaponToBack()
+{
+	if (EquippedWeapon)
 	{
-		EquipWeapon->AttachMeshToSocket(GetMesh(), FName("spine_05Socket"));
+		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("spine_05Socket"));
 	}
 }
 
-void AHero::Arm()
+void AHero::AttachWeaponToHand()
 {
-	if (EquipWeapon)
+	if (EquippedWeapon)
 	{
-		EquipWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
+		EquippedWeapon->AttachMeshToSocket(GetMesh(), FName("RightHandSocket"));
 	}
 }
 
@@ -184,7 +181,12 @@ void AHero::FinishEquipping()
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
-
+void AHero::Arm()
+{
+	PlayEquipMontage(FName("Equip"));
+	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	ActionState = EActionState::EAS_EquippingWeapon;
+}
 
 void AHero::PlayEquipMontage(FName SectionName)
 {
@@ -196,24 +198,24 @@ void AHero::PlayEquipMontage(FName SectionName)
 	}
 }
 
+void AHero::EquipWeapon(AWeapon* Weapon)
+{
+	// Call the equip function from Weapons.cpp
+	Weapon->Equip(GetMesh(), FName("RightHandSocket"), this, this);
+	CharacterState = ECharacterState::ECS_EquippedOneHandedWeapon;
+	OverlappingItem = nullptr; // otherwise it will always be true and not enter in else statement.
+	EquippedWeapon = Weapon;
+}
+
 void AHero::AttackEnd()
 {
 	ActionState = EActionState::EAS_Unoccupied;
-}
-
-
-// Called every frame
-void AHero::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
 }
 
 //void AHero::Jump()
 //{
 //	Super::Jump();
 //}
-
 
 // Called to bind functionality to input
 void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)

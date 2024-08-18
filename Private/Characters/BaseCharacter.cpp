@@ -16,6 +16,7 @@ ABaseCharacter::ABaseCharacter()
 
 	// add attributes component
 	Attributes = CreateDefaultSubobject<UAttributeComponent>(TEXT("Attributes"));
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Camera, ECollisionResponse::ECR_Ignore);
 
 }
 
@@ -223,11 +224,11 @@ void ABaseCharacter::Tick(float DeltaTime)
 
 void ABaseCharacter::SetWeaponCollisionEnabled(ECollisionEnabled::Type CollisionEnabled)
 {
-	if (EquipWeapon && EquipWeapon->GetWeaponBox())
+	if (EquippedWeapon && EquippedWeapon->GetWeaponBox())
 	{
-		EquipWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
+		EquippedWeapon->GetWeaponBox()->SetCollisionEnabled(CollisionEnabled);
 
-		EquipWeapon->IgnoreActors.Empty();
+		EquippedWeapon->IgnoreActors.Empty();
 	}
 }
 

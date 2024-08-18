@@ -26,9 +26,6 @@ public:
 	// Sets default values for this character's properties
 	AHero();
 
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -58,42 +55,35 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* AttackAction;
 
-	// Input Functions
+	/* Input Functions */ 
 	void Move(const FInputActionValue& Value);
-
 	void Look(const FInputActionValue& Value);
-
 	void EKeyPressed();
-
 	virtual void MainAttack() override;
 
-	// Montage Functions
-
+	/* Combat */
+	void EquipWeapon(AWeapon* Weapon);
+	virtual void AttackEnd() override;
+	virtual bool CanAttack() override;
+	bool CanArm();
+	bool CanDisarm();
+	void Disarm();
+	void Arm();
 	void PlayEquipMontage(FName SectionName);
 
-	virtual void AttackEnd() override;
-
-	virtual bool CanAttack() override;
-
-	bool CanEquip();
-
-	bool CanDisarm();
+	UFUNCTION(BlueprintCallable)
+	void AttachWeaponToBack();
 
 	UFUNCTION(BlueprintCallable)
-	void Disarm();
-
-	UFUNCTION(BlueprintCallable)
-	void Arm();
+	void AttachWeaponToHand();
 
 	UFUNCTION(BlueprintCallable)
 	void FinishEquipping();
 
 private:
 
-	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
 
-	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
-	EActionState ActionState = EActionState::EAS_Unoccupied;
+	/* Character Components */
 
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;
@@ -114,13 +104,15 @@ private:
 
 
 
-	/*
-	Animation montages
-	*/
-
-
+	/* Animation montages */
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* EquipMontage;
+
+
+	ECharacterState CharacterState = ECharacterState::ECS_Unequipped;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 
 
 public:
