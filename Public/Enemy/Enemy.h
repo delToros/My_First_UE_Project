@@ -57,6 +57,8 @@ protected:
 
 	virtual int32 PlayDeathMontage() override;
 
+	virtual void AttackEnd() override;
+
 	UPROPERTY(EditAnywhere, Category = Combat)
 	float DeathLifeSpan = 8.f;
 
