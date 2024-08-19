@@ -74,23 +74,8 @@ void AEnemy::Destroyed()
 
 void AEnemy::GetHit_Implementation(const FVector& ImpactPoint)
 {
-	//if hit - show healthbar
+	Super::GetHit_Implementation(ImpactPoint);
 	ShowHealthBar();
-
-	// Check if has health after hit, if not - play death
-	if (IsAlive())
-	{
-		DirectionalHitReact(ImpactPoint);
-	}
-	else
-	{
-		Die();
-	}
-
-	PlayHitSound(ImpactPoint);
-
-	SpawnHitParticles(ImpactPoint);
-
 }
 
 void AEnemy::BeginPlay()
@@ -101,6 +86,8 @@ void AEnemy::BeginPlay()
 	if (PawnSensing) PawnSensing->OnSeePawn.AddDynamic(this, &AEnemy::PawnSeen);
 
 	InitializeEnemy();
+
+	Tags.Add(FName("Enemy"));
 }
 
 void AEnemy::Die()

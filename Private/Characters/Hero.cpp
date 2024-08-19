@@ -13,6 +13,7 @@
 #include "Items/Weapons/Weapon.h"
 #include "DataObjects/Enums.h"
 #include "Animation/AnimMontage.h"
+#include "Components/StaticMeshComponent.h"
 
 
 // Sets default values
@@ -29,6 +30,14 @@ AHero::AHero()
 	// Orient rotation to movement
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);
+
+	// Set collisions to overlap with enemys' weapon
+	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_WorldDynamic);
+	GetMesh()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
+	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_Visibility, ECollisionResponse::ECR_Block);
+	GetMesh()->SetCollisionResponseToChannel(ECollisionChannel::ECC_WorldDynamic, ECollisionResponse::ECR_Overlap);
+	GetMesh()->SetGenerateOverlapEvents(true);
+
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(GetRootComponent());
@@ -235,6 +244,11 @@ void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &AHero::MainAttack);
 	}
+}
+
+void AHero::GetHit_Implementation(const FVector& ImpactPoint)
+{
+	Super::GetHit_Implementation(ImpactPoint);
 }
 
 

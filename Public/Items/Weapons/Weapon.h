@@ -22,6 +22,12 @@ public:
 
 	void Equip(USceneComponent* InParent, FName InSocketName, AActor* NewOwner, APawn* NewInstigator);
 
+	void DeactivateEmbers();
+
+	void DissableSphereCollision();
+
+	void PlayEquipSound();
+
 	void AttachMeshToSocket(USceneComponent* InParent, const FName& InSocketName);
 
 	FORCEINLINE UBoxComponent* GetWeaponBox() const { return WeaponBox;  }
@@ -32,19 +38,27 @@ protected:
 
 	virtual void BeginPlay() override;
 
-	virtual void OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) override;
-
-	virtual void EndSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex) override;
-
 	// not override = it is new function
 	// not virtual = we can make it later if we need to
 	UFUNCTION()
 	void OnBoxOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	bool ActorSameType(AActor* OtherActor);
+
+	void ExecuteGetHit(FHitResult& BoxHit);
 	
 	UFUNCTION(BlueprintImplementableEvent) // With this event we do need to create function definition
 	void CreateFields(const FVector& FieldLocation);
 
 private:
+	
+	void BoxTrace(FHitResult& BoxHit);
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	FVector BoxTraceExtent = FVector(5.f);
+
+	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
+	bool bShowBoxDebug = false;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon Properties")
 	USoundBase* EquipSound;
