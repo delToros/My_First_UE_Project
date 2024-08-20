@@ -116,7 +116,7 @@ void AWeapon::ExecuteGetHit(FHitResult& BoxHit)
 	if (HitInterface)
 	{
 		//HitInterface->GetHit(BoxHit.ImpactPoint);
-		HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint);
+		HitInterface->Execute_GetHit(BoxHit.GetActor(), BoxHit.ImpactPoint, GetOwner());
 	}
 }
 
@@ -132,6 +132,7 @@ void AWeapon::BoxTrace(FHitResult& BoxHit)
 	for (AActor* Actor : IgnoreActors)
 	{
 		ActorsToIgnore.AddUnique(Actor);
+		ActorsToIgnore.Add(GetOwner());
 	}
 
 	//main function
@@ -143,7 +144,7 @@ void AWeapon::BoxTrace(FHitResult& BoxHit)
 		BoxTraceStart->GetComponentRotation(),
 		ETraceTypeQuery::TraceTypeQuery1,
 		false,//BtraceComplex - too expensive
-		ActorsToIgnore,
+		ActorsToIgnore;
 		bShowBoxDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::ForDuration,
 		BoxHit,//Special var for storing box hit
 		true //Ignore self. Required, but duplicates Actors to ignore

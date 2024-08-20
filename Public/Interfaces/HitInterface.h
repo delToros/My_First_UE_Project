@@ -25,7 +25,7 @@ public:
 
 	// = 0 - pure virtual function
 	UFUNCTION(BlueprintNativeEvent)
-	void GetHit(const FVector& ImpactPoint);
+	void GetHit(const FVector& ImpactPoint, AActor* Hitter);
 
 
 };
