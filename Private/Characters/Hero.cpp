@@ -190,6 +190,11 @@ void AHero::FinishEquipping()
 	ActionState = EActionState::EAS_Unoccupied;
 }
 
+void AHero::HitReactEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
+}
+
 void AHero::Arm()
 {
 	PlayEquipMontage(FName("Equip"));
@@ -249,6 +254,8 @@ void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AHero::GetHit_Implementation(const FVector& ImpactPoint)
 {
 	Super::GetHit_Implementation(ImpactPoint);
+
+	ActionState = EActionState::EAS_HitReaction;
 }
 
 
