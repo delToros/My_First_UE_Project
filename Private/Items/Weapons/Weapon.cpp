@@ -129,13 +129,20 @@ void AWeapon::BoxTrace(FHitResult& BoxHit)
 	TArray<AActor*> ActorsToIgnore;
 	ActorsToIgnore.Add(this);
 
+	// Add the owner (player or whoever wields the weapon) to ignore list
+	AActor* WeaponOwner = GetOwner();
+	if (WeaponOwner)
+	{
+		ActorsToIgnore.AddUnique(WeaponOwner);
+	}
+
+	// Add any other actors you want to ignore
 	for (AActor* Actor : IgnoreActors)
 	{
 		ActorsToIgnore.AddUnique(Actor);
-		ActorsToIgnore.Add(GetOwner());
 	}
 
-	//main function
+	// Perform the box trace
 	UKismetSystemLibrary::BoxTraceSingle(
 		this,
 		Start,
@@ -143,11 +150,16 @@ void AWeapon::BoxTrace(FHitResult& BoxHit)
 		BoxTraceExtent, // Half Size
 		BoxTraceStart->GetComponentRotation(),
 		ETraceTypeQuery::TraceTypeQuery1,
-		false,//BtraceComplex - too expensive
+		false, // bTraceComplex - too expensive
 		ActorsToIgnore,
-		bShowBoxDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::ForDuration,
-		BoxHit,//Special var for storing box hit
-		true //Ignore self. Required, but duplicates Actors to ignore
+		bShowBoxDebug ? EDrawDebugTrace::ForDuration : EDrawDebugTrace::None, // Adjust debug settings as needed
+		BoxHit, // Special var for storing box hit
+		true // Ignore self. Required, but duplicates Actors to ignore
 	);
-	IgnoreActors.AddUnique(BoxHit.GetActor());
+
+	// Add the hit actor to the ignore list for future traces, if necessary
+	if (BoxHit.GetActor())
+	{
+		IgnoreActors.AddUnique(BoxHit.GetActor());
+	}
 }

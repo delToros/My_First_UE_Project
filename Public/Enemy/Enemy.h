@@ -50,6 +50,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly)
 	EEnemyState EnemyState = EEnemyState::EES_Patrolling;
 
+	UPROPERTY(BlueprintReadOnly, Category = Combat)
+	AActor* CombatTraget;
+
 private:
 
 	/** AI Behavior */
@@ -89,10 +92,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class AWeapon> WeaponClass;
-
-	//so it does not have nullptr
-	UPROPERTY()
-	AActor* CombatTraget;
 
 	UPROPERTY(EditAnywhere)
 	double CombatRadius = 1000.f;
