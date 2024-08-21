@@ -7,6 +7,7 @@
 #include "Components/AttributeComponent.h" // for attributes
 #include "Kismet/GameplayStatics.h" // For sounds
 #include "Components/CapsuleComponent.h"
+#include "MyProject/DebugMacros.h"
 
 // Sets default values
 ABaseCharacter::ABaseCharacter()
@@ -219,6 +220,30 @@ void ABaseCharacter::StopAttackMontage()
 	{
 		AnimInstance->Montage_Stop(0.25f, AttackMontage);
 	}
+}
+
+FVector ABaseCharacter::GetTranslationWarpTarget()
+{
+	// We want to have distance between warp target location and combat target
+	if (CombatTraget == nullptr) return FVector();
+
+	const FVector CombatTargetLocation = CombatTraget->GetActorLocation();
+	const FVector Location = GetActorLocation();
+
+	FVector TargetToMe = (Location - CombatTargetLocation).GetSafeNormal();
+	TargetToMe *= WarpTargetDistance;
+	DRAW_SPHERE(CombatTargetLocation + TargetToMe);
+	return CombatTargetLocation + TargetToMe;
+}
+
+FVector ABaseCharacter::GetRotationWarpTarget()
+{
+	if (CombatTraget)
+	{
+		return CombatTraget->GetActorLocation();
+	}
+
+	return FVector();
 }
 
 void ABaseCharacter::DisableCapsule()
