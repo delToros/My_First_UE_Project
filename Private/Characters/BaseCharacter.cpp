@@ -232,7 +232,7 @@ FVector ABaseCharacter::GetTranslationWarpTarget()
 
 	FVector TargetToMe = (Location - CombatTargetLocation).GetSafeNormal();
 	TargetToMe *= WarpTargetDistance;
-	DRAW_SPHERE(CombatTargetLocation + TargetToMe);
+	
 	return CombatTargetLocation + TargetToMe;
 }
 
