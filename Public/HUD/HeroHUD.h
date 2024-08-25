@@ -6,6 +6,8 @@
 #include "GameFramework/HUD.h"
 #include "HeroHUD.generated.h"
 
+
+
 /**
  * 
  */
@@ -22,4 +24,10 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = Hero)
 	TSubclassOf<class UHeroOverlay> HeroOverlayClass;
+
+	UPROPERTY()
+	UHeroOverlay* HeroOverlay;
+
+public:
+	FORCEINLINE UHeroOverlay* GetHeroOverlay() const { return HeroOverlay;  }
 };

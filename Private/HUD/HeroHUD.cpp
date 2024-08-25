@@ -15,11 +15,9 @@ void AHeroHUD::BeginPlay()
 		APlayerController* Controller = World->GetFirstPlayerController();
 		if (Controller && HeroOverlayClass)
 		{
-			UHeroOverlay* HeroOverlay = CreateWidget<UHeroOverlay>(Controller, HeroOverlayClass);
+			HeroOverlay = CreateWidget<UHeroOverlay>(Controller, HeroOverlayClass);
 			HeroOverlay->AddToViewport();
 
 		}
-		}
 	}
-
-	
+}

@@ -15,6 +15,9 @@
 #include "Animation/AnimMontage.h"
 #include "Components/StaticMeshComponent.h"
 
+#include "HUD/HeroHUD.h"
+#include "HUD/HeroOverlay.h"
+#include "Components/AttributeComponent.h"
 
 // Sets default values
 AHero::AHero()
@@ -78,9 +81,32 @@ void AHero::BeginPlay()
 			Subsystem->AddMappingContext(HeroMappingContext, 0);
 		}
 	}
+	InitializeHeroOverlay();
+
+}
+
+void AHero::InitializeHeroOverlay()
+{
+	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	if (PlayerController)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player controller"));
+		AHeroHUD* HeroHUD = Cast<AHeroHUD>(PlayerController->GetHUD());
+		if (HeroHUD)
+		{
+			HeroOverlay = HeroHUD->GetHeroOverlay();
+			if (HeroOverlay && Attributes)
+			{
+				HeroOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());
+
+				HeroOverlay->SetStaminahBarPercent(1.f);
+				HeroOverlay->SetGold(0);
+				HeroOverlay->SetSouls(0);
+			}
 
 
-
+		}
+	}
 }
 
 void AHero::Move(const FInputActionValue& Value)

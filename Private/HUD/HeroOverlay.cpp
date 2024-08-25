@@ -9,7 +9,12 @@ void UHeroOverlay::SetHealthBarPercent(float Percent)
 {
 	if (HealthProgressBar)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("HealthProgressBar1 is valid. Setting percent to: %f"), Percent);
 		HealthProgressBar->SetPercent(Percent);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("HealthProgressBar1 is nullptr."));
 	}
 }
 

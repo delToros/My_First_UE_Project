@@ -15,7 +15,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UGroomComponent;
 class AItem;
-
+class UHeroOverlay;
 
 UCLASS()
 class MYPROJECT_API AHero : public ABaseCharacter
@@ -40,6 +40,8 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputMappingContext* HeroMappingContext;
@@ -88,7 +90,7 @@ protected:
 	void HitReactEnd();
 
 private:
-
+	void InitializeHeroOverlay();
 
 	/* Character Components */
 
@@ -120,6 +122,9 @@ private:
 
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EActionState ActionState = EActionState::EAS_Unoccupied;
+
+	UPROPERTY()
+	UHeroOverlay* HeroOverlay;
 
 
 public:

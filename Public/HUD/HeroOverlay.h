@@ -26,16 +26,16 @@ public:
 
 private:
 
-	UPROPERTY(meta = (BindWirget))
+	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* HealthProgressBar;
 
-	UPROPERTY(meta = (BindWirget))
+	UPROPERTY(meta = (BindWidget))
 	class UProgressBar* StaminaProgressBar;
 
-	UPROPERTY(meta = (BindWirget))
+	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* GoldText;
 
-	UPROPERTY(meta = (BindWirget))
+	UPROPERTY(meta = (BindWidget))
 	class UTextBlock* SoulsText;
 	
 };
