@@ -277,10 +277,34 @@ void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	}
 }
 
+void AHero::Jump()
+{
+	if (IsUnoccupied())
+	{
+		Super::Jump();
+	}
+	
+
+}
+
+bool AHero::IsUnoccupied()
+{
+	return ActionState == EActionState::EAS_Unoccupied;
+}
+
 float AHero::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	HandleDamage(DamageAmount);
+	SetHUDHealth();
 	return DamageAmount;
+}
+
+void AHero::SetHUDHealth()
+{
+	if (HeroOverlay && Attributes)
+	{
+		HeroOverlay->SetHealthBarPercent(Attributes->GetHealthPercent());
+	}
 }
 
 void AHero::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
