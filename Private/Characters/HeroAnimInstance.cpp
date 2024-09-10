@@ -29,5 +29,9 @@ void UHeroAnimInstance::NativeUpdateAnimation(float DeltaTime)
 		IsFalling = HeroCharacterMovement->IsFalling();
 
 		CharacterState = HeroCharacter->GetCharacterState();
+
+		ActionState = HeroCharacter->GetActionState();
+
+		DeathPose = HeroCharacter->GetDeathPose();
 	}
 }

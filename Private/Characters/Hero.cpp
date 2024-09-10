@@ -238,6 +238,16 @@ void AHero::PlayEquipMontage(FName SectionName)
 	}
 }
 
+void AHero::Die()
+{
+	Super::Die();
+	
+	ActionState = EActionState::EAS_Dead;
+
+	DisableMeshCollision();
+
+}
+
 void AHero::EquipWeapon(AWeapon* Weapon)
 {
 	// Call the equip function from Weapons.cpp
@@ -312,7 +322,13 @@ void AHero::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
 	Super::GetHit_Implementation(ImpactPoint, Hitter);
 
 	SetWeaponCollisionEnabled(ECollisionEnabled::NoCollision);
-	ActionState = EActionState::EAS_HitReaction;
+
+	if (Attributes && Attributes->GetHealthPercent() > 0.f)
+	{
+		ActionState = EActionState::EAS_HitReaction;
+	}
+
+	
 }
 
 
