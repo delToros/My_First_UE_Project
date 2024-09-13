@@ -60,7 +60,7 @@ protected:
 
 	//Niagara Component
 	UPROPERTY(EditAnywhere)
-	class UNiagaraComponent* EmbersEffect; //Forward declaration in one line
+	class UNiagaraComponent* ItemEffect; //Forward declaration in one line
 
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
