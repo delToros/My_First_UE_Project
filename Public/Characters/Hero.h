@@ -7,6 +7,7 @@
 #include "InputActionValue.h"
 #include "BaseCharacter.h"
 #include "DataObjects/Enums.h"
+#include "Interfaces/PickupInterface.h"
 #include "Hero.generated.h"
 
 class UInputMappingContext;
@@ -16,9 +17,10 @@ class UCameraComponent;
 class UGroomComponent;
 class AItem;
 class UHeroOverlay;
+class ASoul;
 
 UCLASS()
-class MYPROJECT_API AHero : public ABaseCharacter
+class MYPROJECT_API AHero : public ABaseCharacter, public IPickupInterface
 {
 	GENERATED_BODY()
 
@@ -41,7 +43,9 @@ public:
 	virtual void GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter) override;//Overriding GetHit fornm Interfaces
 	/** </IHitInterface> */
 
-	
+	virtual void SetOverlappingItem(AItem* Item) override;
+
+	virtual void AddSouls(ASoul* Soul) override;
 
 protected:
 	// Called when the game starts or when spawned
@@ -139,7 +143,6 @@ private:
 
 public:
 	// FORCEINLINE - UE macro that ensures 100% that this function will be interpreted as INLINE (one line)
-	FORCEINLINE void SetOverlappingItem(AItem* Item) { OverlappingItem = Item; }
 
 	FORCEINLINE ECharacterState GetCharacterState() const { return CharacterState; }
 

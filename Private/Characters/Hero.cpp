@@ -331,5 +331,15 @@ void AHero::GetHit_Implementation(const FVector& ImpactPoint, AActor* Hitter)
 	
 }
 
+void AHero::SetOverlappingItem(AItem* Item)
+{
+	OverlappingItem = Item;
+}
+
+void AHero::AddSouls(ASoul* Soul)
+{
+	UE_LOG(LogTemp, Warning, TEXT("FUUUUCK YEAH"))
+}
+
 
 

@@ -5,6 +5,7 @@
 #include "DrawDebugHelpers.h"
 #include "MyProject/DebugMacros.h"
 #include "Components/SphereComponent.h"
+#include "Interfaces/PickupInterface.h"
 #include "Characters/Hero.h"
 #include "NiagaraComponent.h"
 
@@ -69,13 +70,13 @@ void AItem::OnSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* Ot
 	//}
 
 	// 1. Make a local var
-	AHero* HeroChartacter = Cast<AHero>(OtherActor);
+	IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
 
 	// 2. Check Hero Character if it is not a null pointer
-	if (HeroChartacter) 
+	if (PickupInterface)
 	{
 		// Set the overlapping itemn on the character
-		HeroChartacter->SetOverlappingItem(this);
+		PickupInterface->SetOverlappingItem(this);
 	}
 }
 
@@ -88,13 +89,13 @@ void AItem::EndSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* O
 	//}
 
 	// 1. Make a local var
-	AHero* HeroChartacter = Cast<AHero>(OtherActor);
+	IPickupInterface* PickupInterface = Cast<IPickupInterface>(OtherActor);
 
 	// 2. Check Hero Character if it is not a null pointer
-	if (HeroChartacter)
+	if (PickupInterface)
 	{
 		// Set the overlapping itemn on the character
-		HeroChartacter->SetOverlappingItem(nullptr);
+		PickupInterface->SetOverlappingItem(nullptr);
 	}
 }
 
