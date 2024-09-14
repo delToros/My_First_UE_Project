@@ -49,6 +49,10 @@ protected:
 	UFUNCTION()
 	virtual void EndSphereOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	virtual void SpawnPickupSystem();
+
+	virtual void SpawnPickupSound();
+
 	// Better to use VisibleAnyWhere with static Mesh components
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly) // with this var will participe in reflection system (garbage collection
 	UStaticMeshComponent* ItemMesh; // This creates empty pointer
@@ -62,10 +66,17 @@ protected:
 	UPROPERTY(EditAnywhere)
 	class UNiagaraComponent* ItemEffect; //Forward declaration in one line
 
+	//Sound
+	UPROPERTY(EditAnywhere)
+
+	USoundBase* PickupSound;
+
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	float RunningTime;
 
+	UPROPERTY(EditAnywhere)
+	class UNiagaraSystem* PickupEffect;
 
 
 
