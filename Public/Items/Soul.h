@@ -20,4 +20,10 @@ protected:
 
 private:
 	
+	UPROPERTY(EditAnywhere, Category = "Soul Properties")
+	int32 Souls;
+
+public:
+	// Getter for private var
+	FORCEINLINE int32 GetSouls() const { return Souls; }
 };

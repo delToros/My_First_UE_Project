@@ -18,6 +18,7 @@ class UGroomComponent;
 class AItem;
 class UHeroOverlay;
 class ASoul;
+class ATreasure;
 
 UCLASS()
 class MYPROJECT_API AHero : public ABaseCharacter, public IPickupInterface
@@ -46,6 +47,8 @@ public:
 	virtual void SetOverlappingItem(AItem* Item) override;
 
 	virtual void AddSouls(ASoul* Soul) override;
+
+	virtual void AddGold(ATreasure* Treasure) override;
 
 protected:
 	// Called when the game starts or when spawned

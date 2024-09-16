@@ -19,6 +19,9 @@
 #include "HUD/HeroOverlay.h"
 #include "Components/AttributeComponent.h"
 
+#include "Items/Soul.h"
+#include "Items/Treasure.h"
+
 // Sets default values
 AHero::AHero()
 {
@@ -338,7 +341,20 @@ void AHero::SetOverlappingItem(AItem* Item)
 
 void AHero::AddSouls(ASoul* Soul)
 {
-	UE_LOG(LogTemp, Warning, TEXT("FUUUUCK YEAH"))
+	if (Attributes && HeroOverlay)
+	{
+		Attributes->AddSouls(Soul->GetSouls());
+		HeroOverlay->SetSouls(Attributes->GetSouls());
+	}
+}
+
+void AHero::AddGold(ATreasure* Treasure)
+{
+	if (Attributes && HeroOverlay)
+	{
+		Attributes->AddGold(Treasure->GetGold());
+		HeroOverlay->SetGold(Attributes->GetGold());
+	}
 }
 
 
